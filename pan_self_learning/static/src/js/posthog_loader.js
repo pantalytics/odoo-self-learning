@@ -90,15 +90,15 @@ function loadArrayJs(apiHost) {
 }
 
 /**
- * Insights Pro — injects PostHog into the Odoo backend.
+ * Self-Learning Odoo, observation layer: injects PostHog into the Odoo backend.
  *
- * Fully dormant until a project key is configured under Settings > Insights Pro:
+ * Dormant when no project key is configured under Settings > Self-Learning Odoo:
  * `cfg.enabled` is only true server-side when a key is present.
  */
-export const insightsProService = {
+export const selfLearningService = {
     dependencies: [],
     start() {
-        const cfg = session.pan_insights_pro;
+        const cfg = session.pan_self_learning;
         if (!cfg || !cfg.enabled || !cfg.api_key) {
             return; // dormant — nothing set up yet
         }
@@ -139,4 +139,4 @@ export const insightsProService = {
     },
 };
 
-registry.category("services").add("pan_insights_pro.posthog", insightsProService);
+registry.category("services").add("pan_self_learning.posthog", selfLearningService);
