@@ -6,7 +6,7 @@ class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
     pan_self_learning_enabled = fields.Boolean(
-        string="Enable Self Learning",
+        string="Enable Odoo Self Learning",
         config_parameter="pan_self_learning.enabled",
         help="Master switch. Even when enabled, tracking stays off until a "
         "PostHog project key is provided.",

@@ -90,9 +90,9 @@ function loadArrayJs(apiHost) {
 }
 
 /**
- * Self Learning — injects PostHog into the Odoo backend.
+ * Odoo Self Learning — injects PostHog into the Odoo backend.
  *
- * Fully dormant until a project key is configured under Settings > Self Learning:
+ * Fully dormant until a project key is configured under Settings > Odoo Self Learning:
  * `cfg.enabled` is only true server-side when a key is present.
  */
 export const selfLearningService = {

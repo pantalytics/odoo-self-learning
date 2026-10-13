@@ -1,8 +1,8 @@
-# Self Learning
+# Odoo Self Learning
 
 Product analytics for the **Odoo 19** backend, powered by [PostHog](https://posthog.com).
 
-Self Learning is a lightweight asset module that injects PostHog into
+Odoo Self Learning is a lightweight asset module that injects PostHog into
 `web.assets_backend` so you can see where users get stuck — which screens they
 open, where they drop off, which flows are slow — without shipping any personal
 data off the browser.
@@ -26,11 +26,11 @@ EU Cloud (`https://eu.i.posthog.com`), so a plain install starts sending data
 right away.
 
 1. Copy the `pan_self_learning` folder into your Odoo addons path.
-2. Update the apps list and install **Self Learning**.
+2. Update the apps list and install **Odoo Self Learning**.
 3. Reload the backend. That's it.
 
-To point at a **different** PostHog project, go to **Settings → Self Learning**
-(or the Self Learning app) and change the **project key** (`phc_…`) and **host**
+To point at a **different** PostHog project, go to **Settings → Odoo Self Learning**
+(or the Odoo Self Learning app) and change the **project key** (`phc_…`) and **host**
 (`https://eu.i.posthog.com` for EU Cloud, `https://us.i.posthog.com` for US).
 You can also flip the master switch off there to make the module dormant again.
 

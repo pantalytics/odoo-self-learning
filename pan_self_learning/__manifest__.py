@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Self Learning",
+    "name": "Odoo Self Learning",
     "summary": "Product analytics for the Odoo backend, powered by PostHog",
     "description": """
-Self Learning
-=============
+Odoo Self Learning
+==================
 
 A lightweight, privacy-conscious asset module that injects PostHog into the
 Odoo backend so you can see where users get stuck.
@@ -12,7 +12,7 @@ Odoo backend so you can see where users get stuck.
 Key characteristics
 --------------------
 * **Dormant by default** — does nothing until a real PostHog project key is set
-  under *Settings > Self Learning*.
+  under *Settings > Odoo Self Learning*.
 * **Pseudonymous identity** — users are identified as ``db#uid`` (database name
   plus user id), never by name or email.
 * **Per-customer workspace** — each database reports under its own group so data
@@ -23,7 +23,7 @@ Key characteristics
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.1.1.0",
+    "version": "19.0.1.2.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "data": [
