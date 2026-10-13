@@ -11,23 +11,27 @@ Odoo backend so you can see where users get stuck.
 
 Key characteristics
 --------------------
-* **Dormant by default** — does nothing until a real PostHog project key is set
-  under *Settings > Odoo Self Learning*.
-* **Pseudonymous identity** — users are identified as ``db#uid`` (database name
+* **Dormant until connected** - does nothing until an administrator presses
+  *Connect to Pantalytics* under *Settings > Odoo Self Learning*. The PostHog
+  project arrives in the signed entitlement; no key is ever typed or shipped.
+* **Pseudonymous identity** - users are identified as ``db#uid`` (database name
   plus user id), never by name or email.
-* **Per-customer workspace** — each database reports under its own group so data
+* **Per-customer workspace** - each database reports under its own group so data
   never mixes between customers.
-* **Privacy first** — all input text is masked, autocapture keeps element text
-  out of events, and session replay is disabled.
+* **Privacy first** - all input text is masked, autocapture keeps element text
+  out of events, and session replay can be switched off per instance.
     """,
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.1.2.0",
+    "version": "19.0.2.0.0",
     "license": "LGPL-3",
     "depends": ["web"],
+    "external_dependencies": {"python": ["cryptography", "requests"]},
     "data": [
+        "security/ir.model.access.csv",
         "data/ir_config_parameter.xml",
+        "data/ir_cron.xml",
         "views/res_config_settings_views.xml",
     ],
     "assets": {

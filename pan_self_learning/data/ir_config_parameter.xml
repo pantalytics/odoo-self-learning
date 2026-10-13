@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-    <!-- Sensible, privacy-first defaults. The module stays dormant because no
-         project key is set out of the box. -->
+    <!-- Privacy-first defaults. The module stays dormant until this Odoo is
+         connected to Pantalytics (Settings, Odoo Self Learning, Connect to
+         Pantalytics): the PostHog project key and host arrive in the signed
+         entitlement, never from a data file. -->
     <record id="param_enabled" model="ir.config_parameter">
         <field name="key">pan_self_learning.enabled</field>
         <field name="value">True</field>
-    </record>
-    <!-- Public PostHog project key — dedicated "Odoo Customer Telemetry"
-         project (Pantalytics, EU Cloud), separate from the product-analytics
-         project 129354. phc_ keys are client-side/public by design; safe to
-         ship. Swap under Settings > Odoo Self Learning to point at a different
-         project (e.g. a customer that requires an isolated project). -->
-    <record id="param_project_key" model="ir.config_parameter">
-        <field name="key">pan_self_learning.posthog_project_key</field>
-        <field name="value">phc_sfCTYr4N4pB48RcDWQ6gnPrWFopSakgZJaypk6SSQrtu</field>
-    </record>
-    <record id="param_host" model="ir.config_parameter">
-        <field name="key">pan_self_learning.posthog_host</field>
-        <field name="value">https://eu.i.posthog.com</field>
     </record>
     <!-- Off: only INPUT fields are masked in recordings (always, in JS), so
          recordings stay useful. Flip on under Settings to also hide all visible
@@ -26,7 +15,7 @@
         <field name="key">pan_self_learning.mask_all_text</field>
         <field name="value">False</field>
     </record>
-    <!-- Session replay ON by default — the most valuable signal. Inputs are
+    <!-- Session replay follows the entitlement (on once connected). Inputs are
          always masked. Flip on (disable) per instance if a customer opts out. -->
     <record id="param_disable_session_recording" model="ir.config_parameter">
         <field name="key">pan_self_learning.disable_session_recording</field>

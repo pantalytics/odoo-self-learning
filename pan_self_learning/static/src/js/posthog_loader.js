@@ -90,17 +90,18 @@ function loadArrayJs(apiHost) {
 }
 
 /**
- * Odoo Self Learning — injects PostHog into the Odoo backend.
+ * Odoo Self Learning: injects PostHog into the Odoo backend.
  *
- * Fully dormant until a project key is configured under Settings > Odoo Self Learning:
- * `cfg.enabled` is only true server-side when a key is present.
+ * Fully dormant until this Odoo is connected to Pantalytics (Settings > Odoo
+ * Self Learning > Connect to Pantalytics): `cfg.enabled` is only true
+ * server-side once the signed entitlement named a project.
  */
 export const selfLearningService = {
     dependencies: [],
     start() {
         const cfg = session.pan_self_learning;
         if (!cfg || !cfg.enabled || !cfg.api_key) {
-            return; // dormant — nothing set up yet
+            return; // dormant: not connected to Pantalytics yet
         }
 
         const posthog = installPosthogStub();
@@ -125,10 +126,13 @@ export const selfLearningService = {
             capture_pageview: true,
             loaded: (ph) => {
                 ph.identify(cfg.distinct_id);
+                ph.register({ module_version: cfg.module_version || "" });
                 if (cfg.workspace) {
-                    // Keep each customer's data in its own group.
+                    // Keep each customer's data in its own group. The key is
+                    // the database uuid Pantalytics knows this Odoo by.
                     ph.group("workspace", cfg.workspace, {
-                        name: cfg.company || cfg.workspace,
+                        name: cfg.company || cfg.workspace_name || cfg.workspace,
+                        database: cfg.workspace_name || "",
                         odoo_version: cfg.odoo_version,
                     });
                 }

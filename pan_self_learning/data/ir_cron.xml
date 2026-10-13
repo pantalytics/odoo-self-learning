@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Pantalytics account: one heartbeat a day. Does nothing until somebody
+         has connected. The answer is the signed entitlement that carries the
+         PostHog project; two weeks without one and the module goes quiet. -->
+    <record id="ir_cron_pan_self_learning_heartbeat" model="ir.cron">
+        <field name="name">Odoo Self Learning: Pantalytics Heartbeat</field>
+        <field name="model_id" ref="model_pan_self_learning_link"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_heartbeat()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+        <field name="priority">200</field>
+    </record>
+</odoo>
