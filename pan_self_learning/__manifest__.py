@@ -24,7 +24,7 @@ Key characteristics
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.2.1.0",
+    "version": "19.0.2.2.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "external_dependencies": {"python": ["cryptography", "requests"]},
@@ -36,7 +36,6 @@ Key characteristics
     ],
     "assets": {
         "web.assets_backend": [
-            "pan_self_learning/static/src/scss/settings.scss",
             "pan_self_learning/static/src/js/posthog_loader.js",
         ],
     },
