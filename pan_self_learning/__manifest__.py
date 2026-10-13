@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Insights Pro",
+    "name": "Self Learning",
     "summary": "Product analytics for the Odoo backend, powered by PostHog",
     "description": """
-Insights Pro
-============
+Self Learning
+=============
 
 A lightweight, privacy-conscious asset module that injects PostHog into the
 Odoo backend so you can see where users get stuck.
@@ -12,7 +12,7 @@ Odoo backend so you can see where users get stuck.
 Key characteristics
 --------------------
 * **Dormant by default** — does nothing until a real PostHog project key is set
-  under *Settings > Insights Pro*.
+  under *Settings > Self Learning*.
 * **Pseudonymous identity** — users are identified as ``db#uid`` (database name
   plus user id), never by name or email.
 * **Per-customer workspace** — each database reports under its own group so data
@@ -32,7 +32,7 @@ Key characteristics
     ],
     "assets": {
         "web.assets_backend": [
-            "pan_insights_pro/static/src/js/posthog_loader.js",
+            "pan_self_learning/static/src/js/posthog_loader.js",
         ],
     },
     "images": ["static/description/icon.png"],
