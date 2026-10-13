@@ -24,7 +24,7 @@ Key characteristics
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.2.2.0",
+    "version": "19.0.2.3.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "external_dependencies": {"python": ["cryptography", "requests"]},
