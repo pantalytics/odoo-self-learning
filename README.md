@@ -1,8 +1,8 @@
-# Insights Pro
+# Self Learning
 
 Product analytics for the **Odoo 19** backend, powered by [PostHog](https://posthog.com).
 
-Insights Pro is a lightweight asset module that injects PostHog into
+Self Learning is a lightweight asset module that injects PostHog into
 `web.assets_backend` so you can see where users get stuck — which screens they
 open, where they drop off, which flows are slow — without shipping any personal
 data off the browser.
@@ -25,12 +25,12 @@ The module ships **pre-connected** to the Pantalytics PostHog project on
 EU Cloud (`https://eu.i.posthog.com`), so a plain install starts sending data
 right away.
 
-1. Copy the `pan_insights_pro` folder into your Odoo addons path.
-2. Update the apps list and install **Insights Pro**.
+1. Copy the `pan_self_learning` folder into your Odoo addons path.
+2. Update the apps list and install **Self Learning**.
 3. Reload the backend. That's it.
 
-To point at a **different** PostHog project, go to **Settings → Insights Pro**
-(or the Insights Pro app) and change the **project key** (`phc_…`) and **host**
+To point at a **different** PostHog project, go to **Settings → Self Learning**
+(or the Self Learning app) and change the **project key** (`phc_…`) and **host**
 (`https://eu.i.posthog.com` for EU Cloud, `https://us.i.posthog.com` for US).
 You can also flip the master switch off there to make the module dormant again.
 
@@ -41,15 +41,15 @@ Everything is stored as system parameters, so it can also be managed via
 
 | Parameter | Default | Meaning |
 |---|---|---|
-| `pan_insights_pro.enabled` | `True` | Master switch. |
-| `pan_insights_pro.posthog_project_key` | `phc_gHeP…DzQhS` | PostHog public project key. Empty = dormant. |
-| `pan_insights_pro.posthog_host` | `https://eu.i.posthog.com` | PostHog instance URL. |
-| `pan_insights_pro.mask_all_text` | `True` | Mask all captured input text. |
-| `pan_insights_pro.disable_session_recording` | `True` | Keep session replay off. |
+| `pan_self_learning.enabled` | `True` | Master switch. |
+| `pan_self_learning.posthog_project_key` | `phc_gHeP…DzQhS` | PostHog public project key. Empty = dormant. |
+| `pan_self_learning.posthog_host` | `https://eu.i.posthog.com` | PostHog instance URL. |
+| `pan_self_learning.mask_all_text` | `True` | Mask all captured input text. |
+| `pan_self_learning.disable_session_recording` | `True` | Keep session replay off. |
 
 ## How it works
 
-On every backend page load, `ir.http.session_info` adds an `pan_insights_pro` block
+On every backend page load, `ir.http.session_info` adds an `pan_self_learning` block
 to the session (key, host, pseudonymous `distinct_id`, workspace, privacy
 flags). The backend asset `posthog_loader.js` reads it and — only when a key is
 present — bootstraps PostHog, identifies the pseudonymous user, and assigns the
