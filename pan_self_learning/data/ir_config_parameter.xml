@@ -9,7 +9,7 @@
     <!-- Public PostHog project key — dedicated "Odoo Customer Telemetry"
          project (Pantalytics, EU Cloud), separate from the product-analytics
          project 129354. phc_ keys are client-side/public by design; safe to
-         ship. Swap under Settings > Self Learning to point at a different
+         ship. Swap under Settings > Odoo Self Learning to point at a different
          project (e.g. a customer that requires an isolated project). -->
     <record id="param_project_key" model="ir.config_parameter">
         <field name="key">pan_self_learning.posthog_project_key</field>

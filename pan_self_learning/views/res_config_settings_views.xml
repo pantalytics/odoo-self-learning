@@ -6,12 +6,12 @@
         <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app data-string="Self Learning" string="Self Learning"
+                <app data-string="Odoo Self Learning" string="Odoo Self Learning"
                      name="pan_self_learning" logo="/pan_self_learning/static/description/icon.png">
                     <block title="PostHog Product Analytics"
                            name="pan_self_learning_settings_block">
                         <setting id="pan_self_learning_enabled_setting"
-                                 string="Self Learning"
+                                 string="Odoo Self Learning"
                                  help="Inject PostHog into the backend. Stays dormant until a project key is set.">
                             <field name="pan_self_learning_enabled"/>
                         </setting>
@@ -51,7 +51,7 @@
     </record>
 
     <record id="action_pan_self_learning_settings" model="ir.actions.act_window">
-        <field name="name">Self Learning</field>
+        <field name="name">Odoo Self Learning</field>
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">current</field>
@@ -59,7 +59,7 @@
     </record>
 
     <menuitem id="menu_pan_self_learning_root"
-              name="Self Learning"
+              name="Odoo Self Learning"
               sequence="95"
               web_icon="pan_self_learning,static/description/icon.png"/>
     <menuitem id="menu_pan_self_learning_settings"

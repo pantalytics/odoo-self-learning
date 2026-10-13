@@ -6,7 +6,7 @@ class IrHttp(models.AbstractModel):
     _inherit = "ir.http"
 
     def session_info(self):
-        """Expose the (dormant-by-default) Self Learning configuration to the
+        """Expose the (dormant-by-default) Odoo Self Learning configuration to the
         backend JS bundle through the session, so no extra RPC round-trip is
         needed to bootstrap PostHog.
         """
