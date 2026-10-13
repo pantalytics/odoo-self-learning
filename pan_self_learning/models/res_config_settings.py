@@ -1,39 +1,49 @@
 # -*- coding: utf-8 -*-
-"""The settings page: one line for the Pantalytics account, two privacy
-switches. The project key and host are no longer typed here; they arrive in
-the signed entitlement once the instance is connected (pan_self_learning_link.py).
+"""The settings page: one status line for the Pantalytics account, and on a
+connected instance two switches. The project key and host are never typed
+here; they arrive in the signed entitlement (pan_self_learning_link.py).
+
+There is no master switch any more. Connected is on, Disconnect is off, and
+a switch for a sensor that is off is a page that looks broken. The
+`pan_self_learning.enabled` parameter still exists for a deploy that wants
+to silence the module without disconnecting it (ir_http.py reads it); it is
+not on the screen.
 """
 from odoo import api, fields, models
 
 from .pan_self_learning_link import STATUS_SELECTION
 
+# The line's four states. `broken` is a connection Pantalytics refused or
+# replaced: red, the word that broke, and the way back.
+STATE_SELECTION = [
+    ("not_connected", "Not connected"),
+    ("pending", "Waiting for approval"),
+    ("connected", "Connected"),
+    ("broken", "Broken"),
+]
+BROKEN = ("revoked", "invalid")
+
 
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    pan_self_learning_enabled = fields.Boolean(
-        string="Enable Odoo Self Learning",
-        config_parameter="pan_self_learning.enabled",
-        help="Master switch. Even when enabled, tracking stays off until this "
-        "Odoo instance is connected to Pantalytics.",
+    # Stored as the inverse of the parameter the loader reads
+    # (`disable_session_recording`), so an upgraded database keeps its answer.
+    pan_self_learning_session_replay = fields.Boolean(
+        string="Record sessions",
+        compute="_compute_pan_self_learning_session_replay",
+        inverse="_inverse_pan_self_learning_session_replay",
     )
     pan_self_learning_mask_all_text = fields.Boolean(
-        string="Mask all visible text",
+        string="Mask all text in recordings",
         config_parameter="pan_self_learning.mask_all_text",
         default=False,
-        help="Input fields are ALWAYS masked. Tick this to also hide all visible "
-        "text (labels, values) in recordings: maximum privacy, but you mainly "
-        "see layout and flow. Leave off for useful recordings.",
-    )
-    pan_self_learning_disable_session_recording = fields.Boolean(
-        string="Disable session replay",
-        config_parameter="pan_self_learning.disable_session_recording",
-        default=False,
-        help="Session replay is on once connected (the most valuable signal). "
-        "Tick to turn it off for this instance, for example a customer that opts out.",
     )
 
     # The link, read once per page load. Nothing stored on this model.
+    pan_self_learning_state = fields.Selection(
+        STATE_SELECTION, compute="_compute_pan_self_learning_link"
+    )
     pan_self_learning_link_status = fields.Selection(
         STATUS_SELECTION, compute="_compute_pan_self_learning_link"
     )
@@ -47,11 +57,33 @@ class ResConfigSettings(models.TransientModel):
     pan_self_learning_message = fields.Char(compute="_compute_pan_self_learning_link")
     pan_self_learning_connected_by = fields.Char(compute="_compute_pan_self_learning_link")
 
-    @api.depends("pan_self_learning_enabled")
+    def _compute_pan_self_learning_session_replay(self):
+        off = self.env["ir.config_parameter"].sudo().get_param(
+            "pan_self_learning.disable_session_recording", "False"
+        ) in ("True", "1")
+        for record in self:
+            record.pan_self_learning_session_replay = not off
+
+    def _inverse_pan_self_learning_session_replay(self):
+        for record in self:
+            self.env["ir.config_parameter"].sudo().set_param(
+                "pan_self_learning.disable_session_recording",
+                "False" if record.pan_self_learning_session_replay else "True",
+            )
+
+    @api.depends("pan_self_learning_mask_all_text")
     def _compute_pan_self_learning_link(self):
         link = self.env["pan.self.learning.link"].current()
+        status = (link and link.status) or "not_connected"
+        if status == "active":
+            state = "connected"
+        elif status in BROKEN:
+            state = "broken"
+        else:
+            state = status
         for record in self:
-            record.pan_self_learning_link_status = (link and link.status) or "not_connected"
+            record.pan_self_learning_state = state
+            record.pan_self_learning_link_status = status
             record.pan_self_learning_user_code = link and link.user_code
             record.pan_self_learning_verify_url = link and link.verify_url
             record.pan_self_learning_last_error = link and link.last_error
@@ -63,18 +95,11 @@ class ResConfigSettings(models.TransientModel):
             )
 
     def _reload(self):
-        return {
-            "type": "ir.actions.client",
-            "tag": "reload",
-        }
+        return {"type": "ir.actions.client", "tag": "reload"}
 
     def action_pan_self_learning_connect(self):
         link = self.env["pan.self.learning.link"].action_connect()
-        return {
-            "type": "ir.actions.act_url",
-            "url": link.verify_url,
-            "target": "new",
-        }
+        return {"type": "ir.actions.act_url", "url": link.verify_url, "target": "new"}
 
     def action_pan_self_learning_check(self):
         link = self.env["pan.self.learning.link"].current()

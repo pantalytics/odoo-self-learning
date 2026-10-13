@@ -1,0 +1,77 @@
+// Settings, Odoo Self Learning. One status line, in the shape Mail Pro's
+// setup checklist uses: a coloured dot, the name, the answer, and the one
+// action the state offers. Palette from brand.pantalytics.com. Colour is only
+// ever status: green works, red broken, an outline not yet.
+
+.o_pan_sl {
+    max-width: 46rem;
+}
+
+.o_pan_sl_line {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(0, 29, 33, 0.06);
+
+    &:last-of-type { border-bottom: 0; }
+
+    .o_pan_sl_dot {
+        flex: 0 0 auto;
+        width: 0.6rem;
+        height: 0.6rem;
+        border-radius: 50%;
+        margin-top: 0.45rem;
+    }
+
+    .o_pan_sl_dot_ok { background: #1f9d63; }
+    .o_pan_sl_dot_warn { background: #c0392b; }
+    .o_pan_sl_dot_todo {
+        background: transparent;
+        box-shadow: inset 0 0 0 1px rgba(0, 29, 33, 0.65);
+    }
+
+    .o_pan_sl_body {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .o_pan_sl_head {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+    }
+
+    .o_pan_sl_name {
+        font-weight: 600;
+        color: #001d21;
+        min-width: 11.5rem;
+    }
+
+    .o_pan_sl_value {
+        color: rgba(0, 29, 33, 0.6);
+        min-width: 0;
+    }
+
+    .o_pan_sl_switch_label {
+        font-weight: 600;
+        color: #001d21;
+        margin: 0;
+    }
+
+    .o_pan_sl_msg {
+        margin-top: 0.2rem;
+        font-size: 0.9em;
+        color: rgba(0, 29, 33, 0.6);
+    }
+
+    .o_pan_sl_msg_warn {
+        color: #c0392b;
+    }
+}
+
+// The switch rows sit under the status line, indented past its dot.
+.o_pan_sl_line:not(:first-child) .o_pan_sl_body {
+    padding-left: 1.3rem;
+}
