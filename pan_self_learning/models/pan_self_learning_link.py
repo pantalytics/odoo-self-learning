@@ -246,6 +246,33 @@ class PanSelfLearningLink(models.Model):
         return self._notify(_('This code is no longer valid. Press Connect to '
                               'Pantalytics to get a new one.'), 'warning')
 
+    @api.model
+    def accept_key(self, key):
+        """The Pantalytics panel connected this Odoo itself: it holds an
+        administrator's key here, so there is no tab and no code. The key is
+        the installation key the panel just minted. Returns where the link
+        stands after its first check-in, so the panel can say so.
+        """
+        self._check_admin()
+        if not isinstance(key, str) or not key.startswith('mp_') or len(key) > 128:
+            raise UserError(_('That is not a Pantalytics installation key.'))
+        link = self.current() or self.sudo().create({})
+        link._clear_pairing()
+        link.sudo().write({
+            'key': key,
+            'status': 'active',
+            'posthog_key': False,
+            'posthog_host': False,
+            'session_replay': False,
+            'valid_until': False,
+            'message': False,
+            'last_error': False,
+            'connected_user_id': self.env.user.id,
+            'connected_on': fields.Datetime.now(),
+        })
+        link._heartbeat_guarded()
+        return {'status': link.status, 'last_error': link.last_error or ''}
+
     def collect_on_return(self):
         """The admin came back from the Pantalytics tab: collect the key now."""
         self.ensure_one()
