@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Settings, Odoo Self Learning. A sensor, not an app: no menu of its
-         own, one tab in Settings like Style Pro. The page is one status line
-         (brand.pantalytics.com/product-ui, Settings): a dot, the name, the
-         answer, and the one action the state offers. Nothing below the line
-         exists until the instance is connected; a switch for a sensor that
-         is off is a page that looks broken. -->
+         own, one tab in Settings like Style Pro. Odoo's own settings markup
+         (block, setting), so it looks like every other tab here: a section
+         heading, a card of rows, one line of help, one action. Nothing but
+         the account row exists until the instance is connected. -->
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.self.learning</field>
         <field name="model">res.config.settings</field>
@@ -16,102 +15,82 @@
                      name="pan_self_learning" groups="base.group_system"
                      logo="/pan_self_learning/static/description/icon.png">
                     <field name="pan_self_learning_state" invisible="1"/>
-                    <div class="col-12 o_setting_box o_pan_sl">
 
-                        <div class="o_pan_sl_line">
-                            <span class="o_pan_sl_dot o_pan_sl_dot_ok" role="img" aria-label="Connected" title="Connected"
-                                  invisible="pan_self_learning_state != 'connected'"/>
-                            <span class="o_pan_sl_dot o_pan_sl_dot_warn" role="img" aria-label="Broken" title="Broken"
-                                  invisible="pan_self_learning_state != 'broken'"/>
-                            <span class="o_pan_sl_dot o_pan_sl_dot_todo" role="img" aria-label="Not connected" title="Not connected"
-                                  invisible="pan_self_learning_state in ('connected', 'broken')"/>
-                            <div class="o_pan_sl_body">
-                                <div class="o_pan_sl_head">
-                                    <span class="o_pan_sl_name">Pantalytics account</span>
-                                    <span class="o_pan_sl_value" invisible="pan_self_learning_state != 'not_connected'">Not connected</span>
-                                    <span class="o_pan_sl_value" invisible="pan_self_learning_state != 'pending'">Waiting for approval</span>
-                                    <span class="o_pan_sl_value" invisible="pan_self_learning_state != 'connected'">Connected</span>
-                                    <span class="o_pan_sl_value" invisible="pan_self_learning_state != 'broken'">
-                                        <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>
-                                    </span>
-                                </div>
+                    <block title="Pantalytics" name="pan_self_learning_account_block">
+                        <setting id="pan_self_learning_account_setting"
+                                 string="Pantalytics account"
+                                 help="Reports where people get stuck in this Odoo to your Pantalytics workspace. Nothing is sent until it is connected.">
+                            <!-- Not connected: the one button. -->
+                            <div invisible="pan_self_learning_state != 'not_connected'" class="mt-2">
+                                <button name="action_pan_self_learning_connect" type="object"
+                                        string="Connect to Pantalytics" class="btn-primary"/>
+                            </div>
 
-                                <!-- Not connected: one sentence, one button. -->
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'not_connected'">
-                                    Reports where people get stuck in this Odoo to your Pantalytics workspace. Nothing is sent until it is connected.
+                            <!-- Pending: the code is what gets checked against the other tab. -->
+                            <div invisible="pan_self_learning_state != 'pending'" class="mt-2">
+                                <div>Approve the connection in the Pantalytics tab that just opened. It shows this code:
+                                    <field name="pan_self_learning_user_code" nolabel="1" readonly="1" class="fw-bold d-inline ms-1"/>
                                 </div>
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'not_connected'">
-                                    <button name="action_pan_self_learning_connect" type="object"
-                                            string="Connect to Pantalytics" class="btn-primary"/>
-                                </div>
-
-                                <!-- Pending: the code is what gets checked against the other tab. -->
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'pending'">
-                                    Approve the connection in the Pantalytics tab that just opened. It shows this code:
-                                    <field name="pan_self_learning_user_code" nolabel="1" readonly="1" class="fw-bold ms-1"/>
-                                </div>
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'pending'">
-                                    No tab? <field name="pan_self_learning_verify_url" widget="url" nolabel="1" readonly="1"
-                                                   options="{'website_path': False}" text="Open it again"/>
-                                </div>
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'pending'">
+                                <div class="text-muted">No tab? <field name="pan_self_learning_verify_url" widget="url" nolabel="1" readonly="1"
+                                                   options="{'website_path': False}" text="Open it again" class="d-inline"/></div>
+                                <div class="mt-2">
                                     <button name="action_pan_self_learning_check" type="object"
-                                            string="Check approval" class="btn-secondary"/>
+                                            string="Check approval" class="btn-primary"/>
                                     <button name="action_pan_self_learning_disconnect" type="object"
                                             string="Cancel" class="btn-link"/>
                                 </div>
+                            </div>
 
-                                <!-- Connected: who, and when. -->
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'connected' or not pan_self_learning_connected_by">
-                                    By <field name="pan_self_learning_connected_by" nolabel="1" readonly="1" class="d-inline"/>
-                                </div>
+                            <!-- Connected: who and when. -->
+                            <div invisible="pan_self_learning_state != 'connected'" class="mt-2">
+                                <span class="text-success">Connected</span><span invisible="not pan_self_learning_connected_by"> by
+                                    <field name="pan_self_learning_connected_by" nolabel="1" readonly="1" class="d-inline"/></span>
+                            </div>
 
-                                <!-- Broken: what Pantalytics said, and the way back. -->
-                                <div class="o_pan_sl_msg o_pan_sl_msg_warn" invisible="pan_self_learning_state != 'broken'">
-                                    <field name="pan_self_learning_message" nolabel="1" readonly="1"/>
+                            <!-- Broken: what Pantalytics said, and the way back. -->
+                            <div invisible="pan_self_learning_state != 'broken'" class="mt-2">
+                                <div class="text-danger">
+                                    <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>.
+                                    <field name="pan_self_learning_message" nolabel="1" readonly="1" class="d-inline"/>
                                 </div>
-                                <div class="o_pan_sl_msg" invisible="pan_self_learning_state != 'broken'">
+                                <div class="mt-2">
                                     <button name="action_pan_self_learning_connect" type="object"
                                             string="Connect to Pantalytics" class="btn-primary"/>
                                 </div>
+                            </div>
 
-                                <div class="o_pan_sl_msg o_pan_sl_msg_warn" invisible="not pan_self_learning_last_error">
-                                    <field name="pan_self_learning_last_error" nolabel="1" readonly="1"/>
-                                </div>
+                            <div invisible="not pan_self_learning_last_error" class="mt-2 text-warning">
+                                <field name="pan_self_learning_last_error" nolabel="1" readonly="1"/>
                             </div>
-                        </div>
+                        </setting>
+                    </block>
 
-                        <!-- Only on a connected instance: the two switches,
-                             each a row that says what it does. -->
-                        <div invisible="pan_self_learning_state != 'connected'">
-                            <div class="o_pan_sl_line">
-                                <div class="o_pan_sl_body">
-                                    <div class="o_pan_sl_head">
-                                        <field name="pan_self_learning_session_replay" widget="boolean_toggle" nolabel="1"/>
-                                        <label for="pan_self_learning_session_replay" string="Record sessions" class="o_pan_sl_switch_label"/>
-                                    </div>
-                                    <div class="o_pan_sl_msg">What people type is always masked.</div>
-                                </div>
-                            </div>
-                            <div class="o_pan_sl_line">
-                                <div class="o_pan_sl_body">
-                                    <div class="o_pan_sl_head">
-                                        <field name="pan_self_learning_mask_all_text" widget="boolean_toggle" nolabel="1"/>
-                                        <label for="pan_self_learning_mask_all_text" string="Mask all text in recordings" class="o_pan_sl_switch_label"/>
-                                    </div>
-                                    <div class="o_pan_sl_msg">Labels and values too. Recordings then show layout and flow only.</div>
-                                </div>
-                            </div>
-                            <!-- Destructive, last, with a confirmation. -->
-                            <div class="o_pan_sl_line o_pan_sl_danger">
-                                <div class="o_pan_sl_body">
-                                    <button name="action_pan_self_learning_disconnect" type="object"
-                                            string="Disconnect from Pantalytics" class="btn-link p-0 text-danger"
-                                            confirm="Disconnect this Odoo instance from Pantalytics? It stops reporting until you connect it again."/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Only on a connected instance. -->
+                    <block title="Recordings" name="pan_self_learning_privacy_block"
+                           invisible="pan_self_learning_state != 'connected'">
+                        <setting id="pan_self_learning_replay_setting"
+                                 string="Record sessions"
+                                 help="What people type is always masked.">
+                            <field name="pan_self_learning_session_replay"/>
+                        </setting>
+                        <setting id="pan_self_learning_masktext_setting"
+                                 string="Mask all text in recordings"
+                                 help="Labels and values too. Recordings then show layout and flow only.">
+                            <field name="pan_self_learning_mask_all_text"/>
+                        </setting>
+                    </block>
+
+                    <!-- Destructive, last, with a confirmation. -->
+                    <block title="Disconnect" name="pan_self_learning_danger_block"
+                           invisible="pan_self_learning_state != 'connected'">
+                        <setting id="pan_self_learning_disconnect_setting"
+                                 string="Disconnect from Pantalytics"
+                                 help="Stops reporting until you connect it again. The module stays installed.">
+                            <button name="action_pan_self_learning_disconnect" type="object"
+                                    string="Disconnect" class="btn-secondary mt-2"
+                                    confirm="Disconnect this Odoo instance from Pantalytics? It stops reporting until you connect it again."/>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>
