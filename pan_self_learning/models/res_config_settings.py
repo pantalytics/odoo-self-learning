@@ -9,7 +9,7 @@ a switch for a sensor that is off is a page that looks broken. The
 to silence the module without disconnecting it (ir_http.py reads it); it is
 not on the screen.
 """
-from odoo import api, fields, models
+from odoo import fields, models
 
 from .pan_self_learning_link import STATUS_SELECTION
 
@@ -33,11 +33,6 @@ class ResConfigSettings(models.TransientModel):
         string="Record sessions",
         compute="_compute_pan_self_learning_session_replay",
         inverse="_inverse_pan_self_learning_session_replay",
-    )
-    pan_self_learning_mask_all_text = fields.Boolean(
-        string="Mask all text in recordings",
-        config_parameter="pan_self_learning.mask_all_text",
-        default=False,
     )
 
     # The link, read once per page load. Nothing stored on this model.
@@ -71,7 +66,6 @@ class ResConfigSettings(models.TransientModel):
                 "False" if record.pan_self_learning_session_replay else "True",
             )
 
-    @api.depends("pan_self_learning_mask_all_text")
     def _compute_pan_self_learning_link(self):
         link = self.env["pan.self.learning.link"].current()
         status = (link and link.status) or "not_connected"

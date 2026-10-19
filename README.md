@@ -19,8 +19,9 @@ browser.
 - **Per-customer workspace.** Every database reports under its own PostHog
   group, keyed by the database uuid Pantalytics knows it by, so data never
   mixes between customers.
-- **Privacy first.** All input text is masked, autocapture ignores element
-  values, and session replay can be switched off per instance.
+- **Privacy first.** Recordings mask all text, inputs and attributes and
+  block images, so they show layout and flow only. Autocapture ignores element
+  text and values. Session replay can be switched off per instance.
 
 ## Installation
 
@@ -35,12 +36,11 @@ Python packages, both of which ship with Odoo.
 
 ## Configuration
 
-Two privacy switches on the same settings page, stored as system parameters:
+One privacy switch on the same settings page, stored as system parameters:
 
 | Parameter | Default | Meaning |
 |---|---|---|
 | `pan_self_learning.enabled` | `True` | Master switch. Off keeps the module dormant even when connected. |
-| `pan_self_learning.mask_all_text` | `False` | Also mask all visible text in recordings. |
 | `pan_self_learning.disable_session_recording` | `False` | Turn session replay off for this instance. |
 
 For a staging server, two environment variables override where the module

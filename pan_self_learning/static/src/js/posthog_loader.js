@@ -113,15 +113,19 @@ export const selfLearningService = {
             bootstrap: { distinctID: cfg.distinct_id, isIdentifiedID: true },
             person_profiles: "identified_only",
             autocapture: { element_attribute_ignorelist: ["value"] },
-            mask_all_text: !!cfg.mask_all_text,
+            // Every text node, every input and every attribute is masked, in
+            // replay and in autocapture alike, and images are blocked. A
+            // recording shows layout and flow, never a mail, a name or an
+            // amount. Not a setting: the text on an Odoo screen is the
+            // customer's business data, on every screen.
+            mask_all_text: true,
             mask_all_element_attributes: true,
-            // Session replay is ON by default (most valuable signal). Inputs are
-            // ALWAYS masked so typed-in business data never leaves the browser;
-            // mask_all_text additionally hides all visible text (labels/values).
             disable_session_recording: !!cfg.disable_session_recording,
             session_recording: {
                 maskAllInputs: true,
-                maskTextSelector: cfg.mask_all_text ? "*" : undefined,
+                maskTextSelector: "*",
+                maskAllElementAttributes: true,
+                blockSelector: "img, video, canvas, iframe, svg image",
             },
             capture_pageview: true,
             loaded: (ph) => {
