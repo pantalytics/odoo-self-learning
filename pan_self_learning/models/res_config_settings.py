@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """The settings page: one status line for the Pantalytics account, and on a
-connected instance two switches. The project key and host are never typed
+connected instance one switch. The project key and host are never typed
 here; they arrive in the signed entitlement (pan_self_learning_link.py).
 
 There is no master switch any more. Connected is on, Disconnect is off, and
