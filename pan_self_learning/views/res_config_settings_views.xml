@@ -70,13 +70,8 @@
                            invisible="pan_self_learning_state != 'connected'">
                         <setting id="pan_self_learning_replay_setting"
                                  string="Record sessions"
-                                 help="What people type is always masked.">
+                                 help="Recordings show layout and flow only: all text, input and images are masked.">
                             <field name="pan_self_learning_session_replay"/>
-                        </setting>
-                        <setting id="pan_self_learning_masktext_setting"
-                                 string="Mask all text in recordings"
-                                 help="Labels and values too. Recordings then show layout and flow only.">
-                            <field name="pan_self_learning_mask_all_text"/>
                         </setting>
                     </block>
 

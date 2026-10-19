@@ -73,7 +73,5 @@ class IrHttp(models.AbstractModel):
                 [("name", "=", "pan_self_learning")], limit=1
             ).installed_version
             or "",
-            "mask_all_text": icp.get_param("pan_self_learning.mask_all_text", "False")
-            in ("True", "1"),
             "disable_session_recording": local_off or not (link and link["session_replay"]),
         }

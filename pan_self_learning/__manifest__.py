@@ -18,13 +18,14 @@ Key characteristics
   plus user id), never by name or email.
 * **Per-customer workspace** - each database reports under its own group so data
   never mixes between customers.
-* **Privacy first** - all input text is masked, autocapture keeps element text
-  out of events, and session replay can be switched off per instance.
+* **Privacy first** - recordings mask all text, inputs and attributes and block
+  images, autocapture keeps element text out of events, and session replay can
+  be switched off per instance.
     """,
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.2.3.1",
+    "version": "19.0.2.4.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "external_dependencies": {"python": ["cryptography", "requests"]},
