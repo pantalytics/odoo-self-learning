@@ -80,6 +80,15 @@
                         </setting>
                     </block>
 
+                    <block title="Server errors" name="pan_self_learning_errors_block"
+                           invisible="pan_self_learning_state != 'connected'">
+                        <setting id="pan_self_learning_errors_setting"
+                                 string="Report server errors"
+                                 help="Sends the type of error and where in the code it happened. Never the error text or your data.">
+                            <field name="pan_self_learning_server_errors"/>
+                        </setting>
+                    </block>
+
                     <!-- Destructive, last, with a confirmation. -->
                     <block title="Disconnect" name="pan_self_learning_danger_block"
                            invisible="pan_self_learning_state != 'connected'">

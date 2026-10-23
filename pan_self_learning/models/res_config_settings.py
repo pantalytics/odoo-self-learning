@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """The settings page: one status line for the Pantalytics account, and on a
-connected instance two switches. The project key and host are never typed
+connected instance three switches. The project key and host are never typed
 here; they arrive in the signed entitlement (pan_self_learning_link.py).
 
 There is no master switch any more. Connected is on, Disconnect is off, and
@@ -33,6 +33,13 @@ class ResConfigSettings(models.TransientModel):
         string="Record sessions",
         compute="_compute_pan_self_learning_session_replay",
         inverse="_inverse_pan_self_learning_session_replay",
+    )
+    # Written as "True"/"False" by hand: a Boolean `config_parameter` deletes
+    # the row on False, which server_errors.py would read as its default, on.
+    pan_self_learning_server_errors = fields.Boolean(
+        string="Report server errors",
+        compute="_compute_pan_self_learning_server_errors",
+        inverse="_inverse_pan_self_learning_server_errors",
     )
     pan_self_learning_mask_all_text = fields.Boolean(
         string="Mask all text in recordings",
@@ -69,6 +76,20 @@ class ResConfigSettings(models.TransientModel):
             self.env["ir.config_parameter"].sudo().set_param(
                 "pan_self_learning.disable_session_recording",
                 "False" if record.pan_self_learning_session_replay else "True",
+            )
+
+    def _compute_pan_self_learning_server_errors(self):
+        on = self.env["ir.config_parameter"].sudo().get_param(
+            "pan_self_learning.server_errors", "True"
+        ) not in ("False", "0", "")
+        for record in self:
+            record.pan_self_learning_server_errors = on
+
+    def _inverse_pan_self_learning_server_errors(self):
+        for record in self:
+            self.env["ir.config_parameter"].sudo().set_param(
+                "pan_self_learning.server_errors",
+                "True" if record.pan_self_learning_server_errors else "False",
             )
 
     @api.depends("pan_self_learning_mask_all_text")
