@@ -21,4 +21,10 @@
         <field name="key">pan_self_learning.disable_session_recording</field>
         <field name="value">False</field>
     </record>
+    <!-- Server errors (type and stack, never the text) go to the same project
+         once connected and the entitlement allows it. Off here per instance. -->
+    <record id="param_server_errors" model="ir.config_parameter">
+        <field name="key">pan_self_learning.server_errors</field>
+        <field name="value">True</field>
+    </record>
 </odoo>

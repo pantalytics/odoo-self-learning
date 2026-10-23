@@ -20,11 +20,14 @@ Key characteristics
   never mixes between customers.
 * **Privacy first** - all input text is masked, autocapture keeps element text
   out of events, and session replay can be switched off per instance.
+* **Server errors** - tracebacks and failed jobs on the server are reported as
+  their type and stack only, never the error text or record data. One switch
+  per instance.
     """,
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.2.3.1",
+    "version": "19.0.2.4.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "external_dependencies": {"python": ["cryptography", "requests"]},

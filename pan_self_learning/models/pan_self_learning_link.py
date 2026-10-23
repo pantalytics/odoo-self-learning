@@ -11,7 +11,8 @@ the settings page does the same collection by hand.
 
 After that, one heartbeat a day: the database id and two version strings go
 out, a signed entitlement comes back. The entitlement carries the PostHog
-project key and host and whether sessions may be recorded. Those used to be
+project key and host, whether sessions may be recorded and whether server
+errors may be reported (`server_errors.py`). Those used to be
 in this module's data files, which meant a plain install started reporting
 before anybody had said yes. Now the yes is the pairing, and the project is
 whatever Pantalytics hands out, so a switch there (Disconnect in the panel)
@@ -125,6 +126,7 @@ class PanSelfLearningLink(models.Model):
     posthog_key = fields.Char(readonly=True, copy=False)
     posthog_host = fields.Char(readonly=True, copy=False)
     session_replay = fields.Boolean(readonly=True, copy=False)
+    server_errors = fields.Boolean(readonly=True, copy=False)
     valid_until = fields.Datetime(readonly=True)
     message = fields.Char(readonly=True)
     entitlement_json = fields.Text(readonly=True, copy=False)
@@ -264,6 +266,7 @@ class PanSelfLearningLink(models.Model):
             'posthog_key': False,
             'posthog_host': False,
             'session_replay': False,
+            'server_errors': False,
             'valid_until': False,
             'message': False,
             'last_error': False,
@@ -295,6 +298,7 @@ class PanSelfLearningLink(models.Model):
             'posthog_key': False,
             'posthog_host': False,
             'session_replay': False,
+            'server_errors': False,
             'valid_until': False,
             'message': False,
             'entitlement_json': False,
@@ -378,6 +382,7 @@ class PanSelfLearningLink(models.Model):
             'posthog_key': (payload.get('posthog_key') or '')[:128] or False,
             'posthog_host': (payload.get('posthog_host') or '')[:255] or False,
             'session_replay': bool(payload.get('session_replay')),
+            'server_errors': bool(payload.get('server_errors')),
             'valid_until': _naive_utc(payload.get('valid_until')),
             'message': payload.get('message') or False,
             'entitlement_json': json.dumps(payload, sort_keys=True),
@@ -391,6 +396,7 @@ class PanSelfLearningLink(models.Model):
         self.sudo().write({
             'status': 'invalid', 'last_check': now, 'last_error': reason,
             'posthog_key': False, 'posthog_host': False, 'session_replay': False,
+            'server_errors': False,
             'entitlement_json': False, 'signature': False, 'valid_until': False,
         })
 
