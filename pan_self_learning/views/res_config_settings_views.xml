@@ -3,8 +3,8 @@
     <!-- Settings, Odoo Self Learning. A sensor, not an app: no menu of its
          own, one tab in Settings like Style Pro. Odoo's own settings markup
          (block, setting), so it looks like every other tab here: a section
-         heading, a card of rows, one line of help, one action. Nothing but
-         the account row exists until the instance is connected. -->
+         heading, a card of rows, one short line of help, one action.
+         Nothing but the account row exists until it is connected. -->
     <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.self.learning</field>
         <field name="model">res.config.settings</field>
@@ -17,22 +17,17 @@
                     <field name="pan_self_learning_state" invisible="1"/>
 
                     <block title="Pantalytics" name="pan_self_learning_account_block">
-                        <setting id="pan_self_learning_account_setting"
-                                 string="Pantalytics account"
-                                 help="Reports where people get stuck in this Odoo to your Pantalytics workspace. Nothing is sent until it is connected.">
-                            <!-- Not connected: the one button. -->
-                            <div invisible="pan_self_learning_state != 'not_connected'" class="mt-2">
+                        <setting id="pan_self_learning_account_setting" string="Account">
+                            <div invisible="pan_self_learning_state != 'not_connected'">
+                                <div class="text-muted">Nothing is sent until you connect.</div>
                                 <button name="action_pan_self_learning_connect" type="object"
-                                        string="Connect to Pantalytics" class="btn-primary"/>
+                                        string="Connect" class="btn-primary mt-2"/>
                             </div>
 
-                            <!-- Pending: the code is what gets checked against the other tab. -->
                             <div invisible="pan_self_learning_state != 'pending'" class="mt-2">
-                                <div>Approve the connection in the Pantalytics tab that just opened. It shows this code:
-                                    <field name="pan_self_learning_user_code" nolabel="1" readonly="1" class="fw-bold d-inline ms-1"/>
-                                </div>
-                                <div class="text-muted">No tab? <field name="pan_self_learning_verify_url" widget="url" nolabel="1" readonly="1"
-                                                   options="{'website_path': False}" text="Open it again" class="d-inline"/></div>
+                                <div>Approve code
+                                    <field name="pan_self_learning_user_code" nolabel="1" readonly="1" class="fw-bold d-inline"/>
+                                    in the tab that opened.</div>
                                 <div class="mt-2">
                                     <button name="action_pan_self_learning_check" type="object"
                                             string="Check approval" class="btn-primary"/>
@@ -41,22 +36,24 @@
                                 </div>
                             </div>
 
-                            <!-- Connected: who and when. -->
                             <div invisible="pan_self_learning_state != 'connected'" class="mt-2">
-                                <span class="text-success">Connected</span><span invisible="not pan_self_learning_connected_by"> by
+                                <span class="text-success">Connected</span>
+                                <span invisible="not pan_self_learning_connected_by" class="text-muted ms-1">
                                     <field name="pan_self_learning_connected_by" nolabel="1" readonly="1" class="d-inline"/></span>
+                                <button name="action_pan_self_learning_disconnect" type="object"
+                                        string="Disconnect" class="btn-link ms-2"
+                                        confirm="Disconnect from Pantalytics? Reporting stops until you connect again."/>
                             </div>
 
-                            <!-- Broken: what Pantalytics said, and the way back. -->
                             <div invisible="pan_self_learning_state != 'broken'" class="mt-2">
                                 <div class="text-danger">
-                                    <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>.
+                                    <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>
+                                </div>
+                                <div invisible="not pan_self_learning_message" class="text-muted">
                                     <field name="pan_self_learning_message" nolabel="1" readonly="1" class="d-inline"/>
                                 </div>
-                                <div class="mt-2">
-                                    <button name="action_pan_self_learning_connect" type="object"
-                                            string="Connect to Pantalytics" class="btn-primary"/>
-                                </div>
+                                <button name="action_pan_self_learning_connect" type="object"
+                                        string="Connect" class="btn-primary mt-2"/>
                             </div>
 
                             <div invisible="not pan_self_learning_last_error" class="mt-2 text-warning">
@@ -65,39 +62,19 @@
                         </setting>
                     </block>
 
-                    <!-- Only on a connected instance. -->
-                    <block title="Recordings" name="pan_self_learning_privacy_block"
+                    <!-- Only once connected. -->
+                    <block title="Reporting" name="pan_self_learning_privacy_block"
                            invisible="pan_self_learning_state != 'connected'">
-                        <setting id="pan_self_learning_replay_setting"
-                                 string="Record sessions"
-                                 help="What people type is always masked.">
+                        <setting id="pan_self_learning_replay_setting" string="Record sessions"
+                                 help="Typed text is always masked.">
                             <field name="pan_self_learning_session_replay"/>
                         </setting>
-                        <setting id="pan_self_learning_masktext_setting"
-                                 string="Mask all text in recordings"
-                                 help="Labels and values too. Recordings then show layout and flow only.">
+                        <setting id="pan_self_learning_masktext_setting" string="Mask all text">
                             <field name="pan_self_learning_mask_all_text"/>
                         </setting>
-                    </block>
-
-                    <block title="Server errors" name="pan_self_learning_errors_block"
-                           invisible="pan_self_learning_state != 'connected'">
-                        <setting id="pan_self_learning_errors_setting"
-                                 string="Report server errors"
-                                 help="Sends the type of error and where in the code it happened. Never the error text or your data.">
+                        <setting id="pan_self_learning_errors_setting" string="Report server errors"
+                                 help="Error type and location only, never your data.">
                             <field name="pan_self_learning_server_errors"/>
-                        </setting>
-                    </block>
-
-                    <!-- Destructive, last, with a confirmation. -->
-                    <block title="Disconnect" name="pan_self_learning_danger_block"
-                           invisible="pan_self_learning_state != 'connected'">
-                        <setting id="pan_self_learning_disconnect_setting"
-                                 string="Disconnect from Pantalytics"
-                                 help="Stops reporting until you connect it again. The module stays installed.">
-                            <button name="action_pan_self_learning_disconnect" type="object"
-                                    string="Disconnect" class="btn-secondary mt-2"
-                                    confirm="Disconnect this Odoo instance from Pantalytics? It stops reporting until you connect it again."/>
                         </setting>
                     </block>
                 </app>

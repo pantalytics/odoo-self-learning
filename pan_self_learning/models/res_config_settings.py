@@ -105,12 +105,14 @@ class ResConfigSettings(models.TransientModel):
         for record in self:
             record.pan_self_learning_state = state
             record.pan_self_learning_link_status = status
-            record.pan_self_learning_user_code = link and link.user_code
-            record.pan_self_learning_verify_url = link and link.verify_url
-            record.pan_self_learning_last_error = link and link.last_error
-            record.pan_self_learning_message = link and link.message
-            who = link and link.connected_user_id
-            when = link and link.connected_on
+            # `link and link.x` on an empty recordset gives the recordset,
+            # which a Char field shows as "pan.self.learning.link()".
+            record.pan_self_learning_user_code = link.user_code if link else False
+            record.pan_self_learning_verify_url = link.verify_url if link else False
+            record.pan_self_learning_last_error = link.last_error if link else False
+            record.pan_self_learning_message = link.message if link else False
+            who = link.connected_user_id if link else False
+            when = link.connected_on if link else False
             record.pan_self_learning_connected_by = (
                 "%s, %s" % (who.name, fields.Date.to_string(when)) if who and when else False
             )

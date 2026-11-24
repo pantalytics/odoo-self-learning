@@ -10,7 +10,7 @@ errors by type and stack, never their text. No personal data leaves Odoo.
 ## Highlights
 
 - **Dormant until connected.** Nothing is sent until an administrator presses
-  *Connect to Pantalytics* in Settings. The PostHog project key and host arrive
+  *Connect* under Settings, Odoo Self Learning. The PostHog project key and host arrive
   in a signed entitlement from Pantalytics; no key is typed, shipped or stored
   in a data file. Disconnect (in Odoo or in the Pantalytics panel) and the
   module goes quiet at its next daily check-in.
@@ -31,7 +31,7 @@ errors by type and stack, never their text. No personal data leaves Odoo.
 
 1. Copy the `pan_self_learning` folder into your Odoo addons path.
 2. Update the apps list and install **Odoo Self Learning**.
-3. Go to **Settings, Odoo Self Learning** and press **Connect to Pantalytics**.
+3. Go to **Settings, Odoo Self Learning** and press **Connect**.
    A tab opens on the Pantalytics panel with the code filled in. Sign in,
    check that the page names this Odoo, press Approve, then come back.
 
