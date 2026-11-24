@@ -10,7 +10,7 @@ errors by type and stack, never their text. No personal data leaves Odoo.
 ## Highlights
 
 - **Dormant until connected.** Nothing is sent until an administrator presses
-  *Connect to Pantalytics* in Settings. The PostHog project key and host arrive
+  *Connect to Pantalytics* under Settings, Odoo Self Learning. The PostHog project key and host arrive
   in a signed entitlement from Pantalytics; no key is typed, shipped or stored
   in a data file. Disconnect (in Odoo or in the Pantalytics panel) and the
   module goes quiet at its next daily check-in.

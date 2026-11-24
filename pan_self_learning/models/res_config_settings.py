@@ -9,7 +9,7 @@ a switch for a sensor that is off is a page that looks broken. The
 to silence the module without disconnecting it (ir_http.py reads it); it is
 not on the screen.
 """
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 from .pan_self_learning_link import STATUS_SELECTION
 
@@ -63,6 +63,7 @@ class ResConfigSettings(models.TransientModel):
     pan_self_learning_last_error = fields.Char(compute="_compute_pan_self_learning_link")
     pan_self_learning_message = fields.Char(compute="_compute_pan_self_learning_link")
     pan_self_learning_connected_by = fields.Char(compute="_compute_pan_self_learning_link")
+    pan_self_learning_connected_to = fields.Char(compute="_compute_pan_self_learning_link")
 
     def _compute_pan_self_learning_session_replay(self):
         off = self.env["ir.config_parameter"].sudo().get_param(
@@ -105,14 +106,20 @@ class ResConfigSettings(models.TransientModel):
         for record in self:
             record.pan_self_learning_state = state
             record.pan_self_learning_link_status = status
-            record.pan_self_learning_user_code = link and link.user_code
-            record.pan_self_learning_verify_url = link and link.verify_url
-            record.pan_self_learning_last_error = link and link.last_error
-            record.pan_self_learning_message = link and link.message
-            who = link and link.connected_user_id
-            when = link and link.connected_on
+            # `link and link.x` on an empty recordset gives the recordset,
+            # which a Char field shows as "pan.self.learning.link()".
+            record.pan_self_learning_user_code = link.user_code if link else False
+            record.pan_self_learning_verify_url = link.verify_url if link else False
+            record.pan_self_learning_last_error = link.last_error if link else False
+            record.pan_self_learning_message = link.message if link else False
+            who = link.connected_user_id if link else False
+            when = link.connected_on if link else False
             record.pan_self_learning_connected_by = (
                 "%s, %s" % (who.name, fields.Date.to_string(when)) if who and when else False
+            )
+            name = link.workspace_name if link else False
+            record.pan_self_learning_connected_to = (
+                _("Connected to %s", name) if name else _("Connected")
             )
 
     def _reload(self):
