@@ -18,7 +18,8 @@
 
                     <block title="Pantalytics" name="pan_self_learning_account_block">
                         <setting id="pan_self_learning_account_setting" string="Workspace">
-                            <div invisible="pan_self_learning_state != 'not_connected'">
+                            <!-- Not connected, or turned off at Pantalytics: the same one button. -->
+                            <div invisible="pan_self_learning_state not in ('not_connected', 'broken')">
                                 <button name="action_pan_self_learning_connect" type="object"
                                         string="Connect to Pantalytics" class="btn-primary mt-1"/>
                             </div>
@@ -36,14 +37,6 @@
                                 <button name="action_pan_self_learning_disconnect" type="object"
                                         string="Disconnect" class="btn-link px-0"
                                         confirm="Disconnect from Pantalytics? Reporting stops until you connect again."/>
-                            </div>
-
-                            <div invisible="pan_self_learning_state != 'broken'">
-                                <div class="text-danger">
-                                    <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>
-                                </div>
-                                <button name="action_pan_self_learning_connect" type="object"
-                                        string="Connect to Pantalytics" class="btn-primary mt-2"/>
                             </div>
 
                             <div invisible="not pan_self_learning_last_error" class="mt-2 text-warning">

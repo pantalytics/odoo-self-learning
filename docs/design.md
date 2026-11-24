@@ -20,7 +20,7 @@ to a company. Connect is for something outside that gets a key.)
 | Not connected | **Connect to Pantalytics**, nothing else | [1](design/1-not-connected.png) |
 | Waiting | amber "Finish in the Pantalytics tab", Cancel; follows by itself | [2](design/2-pending.png) |
 | Connected | green "Connected to Juffermans", Disconnect beside it; Reporting appears | [3](design/3-connected.png) |
-| Disconnected at Pantalytics | red status, **Connect to Pantalytics** | [4](design/4-disconnected.png) |
+| Turned off at Pantalytics | the same as Not connected: **Connect to Pantalytics** | [4](design/4-disconnected.png) |
 
 On the Pantalytics side the approval page says "Connect *host* for Odoo
 Self Learning to your workspace *X*" when the Odoo instance is already in a
