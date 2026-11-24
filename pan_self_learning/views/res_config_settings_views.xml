@@ -19,33 +19,31 @@
                     <block title="Pantalytics" name="pan_self_learning_account_block">
                         <setting id="pan_self_learning_account_setting" string="Account">
                             <div invisible="pan_self_learning_state != 'not_connected'">
-                                <div class="text-muted">Nothing is sent until you connect.</div>
+                                <div class="text-muted">Not connected. Nothing is sent until you connect.</div>
                                 <button name="action_pan_self_learning_connect" type="object"
-                                        string="Connect" class="btn-primary mt-2"/>
+                                        string="Connect Account" class="btn-primary mt-2"/>
                             </div>
 
-                            <div invisible="pan_self_learning_state != 'pending'" class="mt-2">
+                            <div invisible="pan_self_learning_state != 'pending'">
+                                <div class="text-warning">Waiting for approval</div>
                                 <div>Approve code
                                     <field name="pan_self_learning_user_code" nolabel="1" readonly="1" class="fw-bold d-inline"/>
                                     in the tab that opened.</div>
                                 <div class="mt-2">
                                     <button name="action_pan_self_learning_check" type="object"
-                                            string="Check approval" class="btn-primary"/>
+                                            string="Check Approval" class="btn-primary"/>
                                     <button name="action_pan_self_learning_disconnect" type="object"
                                             string="Cancel" class="btn-link"/>
                                 </div>
                             </div>
 
-                            <div invisible="pan_self_learning_state != 'connected'" class="mt-2">
+                            <div invisible="pan_self_learning_state != 'connected'">
                                 <span class="text-success">Connected</span>
                                 <span invisible="not pan_self_learning_connected_by" class="text-muted ms-1">
                                     <field name="pan_self_learning_connected_by" nolabel="1" readonly="1" class="d-inline"/></span>
-                                <button name="action_pan_self_learning_disconnect" type="object"
-                                        string="Disconnect" class="btn-link ms-2"
-                                        confirm="Disconnect from Pantalytics? Reporting stops until you connect again."/>
                             </div>
 
-                            <div invisible="pan_self_learning_state != 'broken'" class="mt-2">
+                            <div invisible="pan_self_learning_state != 'broken'">
                                 <div class="text-danger">
                                     <field name="pan_self_learning_link_status" nolabel="1" readonly="1" class="d-inline"/>
                                 </div>
@@ -53,7 +51,7 @@
                                     <field name="pan_self_learning_message" nolabel="1" readonly="1" class="d-inline"/>
                                 </div>
                                 <button name="action_pan_self_learning_connect" type="object"
-                                        string="Connect" class="btn-primary mt-2"/>
+                                        string="Connect Account" class="btn-primary mt-2"/>
                             </div>
 
                             <div invisible="not pan_self_learning_last_error" class="mt-2 text-warning">
@@ -62,19 +60,31 @@
                         </setting>
                     </block>
 
-                    <!-- Only once connected. -->
+                    <!-- Only once connected. Checkboxes, saved with Save. -->
                     <block title="Reporting" name="pan_self_learning_privacy_block"
                            invisible="pan_self_learning_state != 'connected'">
-                        <setting id="pan_self_learning_replay_setting" string="Record sessions"
+                        <setting id="pan_self_learning_replay_setting" string="Record Sessions"
                                  help="Typed text is always masked.">
                             <field name="pan_self_learning_session_replay"/>
                         </setting>
-                        <setting id="pan_self_learning_masktext_setting" string="Mask all text">
+                        <setting id="pan_self_learning_masktext_setting" string="Mask All Text"
+                                 help="Labels and values too.">
                             <field name="pan_self_learning_mask_all_text"/>
                         </setting>
-                        <setting id="pan_self_learning_errors_setting" string="Report server errors"
+                        <setting id="pan_self_learning_errors_setting" string="Report Server Errors"
                                  help="Error type and location only, never your data.">
                             <field name="pan_self_learning_server_errors"/>
+                        </setting>
+                    </block>
+
+                    <!-- Destructive, last, confirmed. -->
+                    <block title="Danger Zone" name="pan_self_learning_danger_block"
+                           invisible="pan_self_learning_state != 'connected'">
+                        <setting id="pan_self_learning_disconnect_setting" string="Disconnect"
+                                 help="Reporting stops until you connect again.">
+                            <button name="action_pan_self_learning_disconnect" type="object"
+                                    string="Disconnect" class="btn-secondary mt-2"
+                                    confirm="Disconnect this Odoo instance from Pantalytics? Reporting stops until you connect again."/>
                         </setting>
                     </block>
                 </app>

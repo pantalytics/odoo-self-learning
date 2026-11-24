@@ -2,7 +2,7 @@
 """This database's link to a Pantalytics account, and the key it brings.
 
 The module is dormant until somebody connects it. The admin presses
-**Connect** on the settings page; Odoo asks the Pantalytics
+**Connect Account** on the settings page; Odoo asks the Pantalytics
 server for a pairing and opens its page in a new tab with the code already in
 the link. The admin signs in there, checks that the page names this Odoo, and
 approves; the button back lands on `/self_learning/pantalytics/return`, which
