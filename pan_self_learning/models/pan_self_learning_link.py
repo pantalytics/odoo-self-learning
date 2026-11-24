@@ -2,7 +2,7 @@
 """This database's link to a Pantalytics account, and the key it brings.
 
 The module is dormant until somebody connects it. The admin presses
-**Connect Account** on the settings page; Odoo asks the Pantalytics
+**Connect to Pantalytics** on the settings page; Odoo asks the Pantalytics
 server for a pairing and opens its page in a new tab with the code already in
 the link. The admin signs in there, checks that the page names this Odoo, and
 approves; the button back lands on `/self_learning/pantalytics/return`, which
@@ -129,6 +129,8 @@ class PanSelfLearningLink(models.Model):
     server_errors = fields.Boolean(readonly=True, copy=False)
     valid_until = fields.Datetime(readonly=True)
     message = fields.Char(readonly=True)
+    # The Pantalytics workspace this Odoo reports to, as the signed answer names it.
+    workspace_name = fields.Char(readonly=True, copy=False)
     entitlement_json = fields.Text(readonly=True, copy=False)
     signature = fields.Char(readonly=True, copy=False)
 
@@ -286,6 +288,7 @@ class PanSelfLearningLink(models.Model):
             'server_errors': False,
             'valid_until': False,
             'message': False,
+            'workspace_name': False,
             'last_error': False,
             'connected_user_id': self.env.user.id,
             'connected_on': fields.Datetime.now(),
@@ -318,6 +321,7 @@ class PanSelfLearningLink(models.Model):
             'server_errors': False,
             'valid_until': False,
             'message': False,
+            'workspace_name': False,
             'entitlement_json': False,
             'signature': False,
             'last_error': False,
@@ -402,6 +406,7 @@ class PanSelfLearningLink(models.Model):
             'server_errors': bool(payload.get('server_errors')),
             'valid_until': _naive_utc(payload.get('valid_until')),
             'message': payload.get('message') or False,
+            'workspace_name': (payload.get('workspace_name') or '')[:128] or False,
             'entitlement_json': json.dumps(payload, sort_keys=True),
             'signature': signature,
             'last_check': now,

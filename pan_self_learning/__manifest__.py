@@ -12,7 +12,7 @@ Odoo backend so you can see where users get stuck.
 Key characteristics
 --------------------
 * **Dormant until connected** - does nothing until an administrator presses
-  *Connect Account* under *Settings > Odoo Self Learning*. The PostHog
+  *Connect to Pantalytics* under *Settings > Odoo Self Learning*. The PostHog
   project arrives in the signed entitlement; no key is ever typed or shipped.
 * **Pseudonymous identity** - users are identified as ``db#uid`` (database name
   plus user id), never by name or email.

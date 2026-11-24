@@ -1,38 +1,41 @@
 # Settings page design
 
-The one screen this module has: Settings, Odoo Self Learning. Checked
-against brand.pantalytics.com (Odoo UI, Product UI, Colours, Tone of
-voice) on 2026-11-24. Screenshots are Odoo 19, taken locally.
+The one screen this module has: Settings, Odoo Self Learning. The clickable
+design is the canvas "Self Learning screens" in Claude (Design type);
+screenshots below are Odoo 19, taken locally on 2026-11-24.
+
+## Words
+
+One verb and one thing, on every screen of the flow: this Odoo instance
+**connects** to a Pantalytics **workspace**. Signing in happens on the way
+when it is needed and is never a step of its own. The pairing code is
+plumbing and never shown. (Link is for joining two things that are both
+already in Pantalytics: a local vault to a cloud vault, a partner workspace
+to a company. Connect is for something outside that gets a key.)
 
 ## States
 
-| State | What the account row shows | Screenshot |
+| State | The Workspace row | Screenshot |
 |---|---|---|
-| Not connected | "Not connected. Nothing is sent until you connect." + **Connect Account** | [1](design/1-not-connected.png), [phone](design/5-not-connected-phone.png) |
-| Waiting for approval | amber status, the code, **Check Approval**, Cancel | [2](design/2-pending.png) |
-| Connected | green "Connected", who and when; Reporting and Danger Zone appear | [3](design/3-connected.png) |
-| Disconnected or key refused | red status, Pantalytics' message, **Connect Account** | [4](design/4-disconnected.png) |
+| Not connected | **Connect to Pantalytics**, nothing else | [1](design/1-not-connected.png) |
+| Waiting | amber "Finish in the Pantalytics tab", Cancel; follows by itself | [2](design/2-pending.png) |
+| Connected | green "Connected to Juffermans", Disconnect beside it; Reporting appears | [3](design/3-connected.png) |
+| Disconnected at Pantalytics | red status, **Connect to Pantalytics** | [4](design/4-disconnected.png) |
 
-## Brand check
+On the Pantalytics side the approval page says "Connect *host* for Odoo
+Self Learning to your workspace *X*" when the Odoo instance is already in a
+workspace, and offers a pick of workspace when it is not.
 
-| Rule (source page) | How this page meets it |
+## Brand check (brand.pantalytics.com)
+
+| Rule | How |
 |---|---|
-| One section per product, at most three blocks (Odoo UI) | Pantalytics, Reporting, Danger Zone |
-| Checkboxes, no switches; nothing works until Save (Odoo UI) | Reporting uses Odoo's checkbox settings |
-| One line of explanation per setting (Odoo UI) | Every setting has one short line or none |
-| Odoo's Title Case for labels in the backend (Odoo UI) | Connect Account, Check Approval, Record Sessions |
-| No accent colour or Murecho in the backend (Odoo UI) | Odoo's own buttons and font only |
-| One primary button per screen (Product UI) | Connect Account, or Check Approval while waiting |
-| Colour means status: green works, amber needs the user, red broken (Product UI) | Connected green, Waiting amber, Disconnected red |
-| Destructive actions last, confirmed (Product UI) | Disconnect only in Danger Zone, with a confirm |
-| Confirm: question with the thing, consequence, verb repeated (Product UI) | "Disconnect this Odoo instance from Pantalytics? Reporting stops until you connect again." |
-| State each fact once (Product UI) | Status word once; no repeated "Pantalytics account" title |
-| Fixed term "Odoo instance", never "database" (Product UI) | Page copy uses neither; the confirm says Odoo instance |
+| One section per product, at most three blocks; checkboxes, saved with Save | Pantalytics and Reporting; two checkboxes |
+| Odoo's own buttons, font and Title Case in the backend | yes |
+| One primary button per screen | Connect to Pantalytics, only when not connected |
+| Colour is status: green works, amber needs you, red broken | yes |
+| Stay quiet when fine; state each fact once | no help lines, no "nothing is sent" line |
+| Destructive actions confirmed | Disconnect asks first |
 
-## Open
-
-- Odoo settings cannot collapse a block, so Danger Zone shows whenever the
-  instance is connected instead of folded away.
-- The message under "Disconnected at Pantalytics" comes from the
-  Pantalytics server (`apps/self_learning.py` in odoo-mcp-pro-admin) and
-  still says "database".
+Departure, on purpose: Disconnect sits beside Connected instead of in a
+Danger Zone block; it belongs to that row and is undone by connecting again.
