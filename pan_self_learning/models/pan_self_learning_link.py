@@ -249,6 +249,23 @@ class PanSelfLearningLink(models.Model):
                               'Pantalytics to get a new one.'), 'warning')
 
     @api.model
+    def wait_for_approval(self):
+        """Polled by the settings page while it waits: collect the key if the
+        code was approved, quietly, and say where the link stands now."""
+        self._check_admin()
+        link = self.current()
+        if not link:
+            return 'not_connected'
+        if link.status == 'pending':
+            try:
+                link.action_check_approval()
+            except UserError:
+                # Pantalytics out of reach for a moment: keep waiting, the
+                # next poll tries again. No dialog every six seconds.
+                return 'pending'
+        return link.status
+
+    @api.model
     def accept_key(self, key):
         """The Pantalytics panel connected this Odoo itself: it holds an
         administrator's key here, so there is no tab and no code. The key is
