@@ -2,3 +2,4 @@
 from . import pan_self_learning_link
 from . import ir_http
 from . import res_config_settings
+from . import pan_self_learning_monitor

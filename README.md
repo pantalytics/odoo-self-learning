@@ -48,6 +48,7 @@ Privacy switches on the same settings page, stored as system parameters:
 | `pan_self_learning.mask_all_text` | `False` | Also mask all visible text in recordings. |
 | `pan_self_learning.disable_session_recording` | `False` | Turn session replay off for this instance. |
 | `pan_self_learning.server_errors` | `True` | Report server errors (type and stack only). |
+| `pan_self_learning.monitor_push_url` | empty | Uptime Kuma push URL. Every five minutes the module pushes `status=up`, or `status=down` with the modules whose code and database disagree. Empty: no push. |
 
 For a staging server, two environment variables override where the module
 talks to and which signature it trusts: `PAN_SELF_LEARNING_SERVER_URL` and
@@ -80,6 +81,15 @@ process reads that database's entitlement through its own cursor, sends at
 most one event per error kind per minute to `<host>/i/v0/e/`, and drops
 anything it cannot send. Errors logged outside a database (server start, the
 database manager) are not reported. The code is `server_errors.py`.
+
+Module drift: every five minutes the cron *Odoo Self Learning: Monitor*
+compares each installed module's database version with the version in its
+manifest on disk. When a host pulls new code without running the upgrade, the
+two differ and screens that touch a new field fail with `UndefinedColumn`.
+Drift is logged as one `ERROR` (format string only, so error tracking keeps
+one issue), and pushed to the Kuma monitor when one is configured. Kuma
+alarms on `down`, and on a missing push. The logic is `monitor.py`, tested
+without Odoo: `python -m pytest -q tests/`.
 
 ## Notes
 
