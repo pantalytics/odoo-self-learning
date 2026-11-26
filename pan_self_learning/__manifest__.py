@@ -23,11 +23,14 @@ Key characteristics
 * **Server errors** - tracebacks and failed jobs on the server are reported as
   their type and stack only, never the error text or record data. One switch
   per instance.
+* **Module drift and heartbeat** - every five minutes the module checks that
+  each installed module's code matches the database it runs on, logs drift as
+  one error, and can push its status to an Uptime Kuma push monitor.
     """,
     "author": "Pantalytics",
     "website": "https://pantalytics.com",
     "category": "Productivity/Analytics",
-    "version": "19.0.2.5.0",
+    "version": "19.0.2.6.0",
     "license": "LGPL-3",
     "depends": ["web"],
     "external_dependencies": {"python": ["cryptography", "requests"]},
