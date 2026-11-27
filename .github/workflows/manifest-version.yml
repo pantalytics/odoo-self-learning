@@ -1,0 +1,14 @@
+# CloudPepper (auto upgrade) and Odoo.sh only run -u when the manifest version
+# goes up. This blocks a merge that changes a module without a bump.
+# Local equivalent: tools/check_manifest_version.py origin/19.0
+name: Manifest version bumped
+on:
+  pull_request:
+jobs:
+  version-bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 tools/check_manifest_version.py origin/${{ github.base_ref }}
